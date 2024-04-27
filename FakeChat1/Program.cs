@@ -19,7 +19,7 @@ while (true)
     }
     users.Add(input); // add input to users
     Console.Clear();
-    Console.WriteLine("\n  Colors guide:\n  1 - Magenta\n  2 - Red\n  3 - Blue\n  4 - Green");
+    Console.WriteLine("\n  Colors guide:\n  1 - Magenta\n  2 - Red\n  3 - Blue\n  4 - Green\n  5 - Yellow");
     Console.Write($"\n  Please enter the color of User {users.Count}: ");
     int intput = Convert.ToInt32(Console.ReadLine());
     colors.Add(intput); // add intput to colors
@@ -47,16 +47,20 @@ while (true) // typing loop
             case "help":
                 help = true;
                 break;
-            case "su": // user switching
-                if (user == users.Count - 1)
-                {
-                    user = 0;
-                }
-                else
-                {
-                    user++;
-                }
-                break;
+        }
+        string[] words = input.Split(' ');
+        if (words[0] == "su")
+        {
+            if (Convert.ToInt32(words[1]) <= users.Count) // new and refined user switching!!!!!! how cool and amazing and awesome
+            {
+                user = Convert.ToInt32(words[1]) - 1;
+            }
+            else
+            {
+                Console.WriteLine("\n  This user does not exist!");
+                Console.WriteLine($"  the number you wrote is {Convert.ToInt32(words[1])}");
+                Console.WriteLine($" it is bigger than {users.Count}");
+            }
         }
 
         message.Add(users[user]); // add shit to message
@@ -68,7 +72,7 @@ while (true) // typing loop
         PrintMessages();
         if (help)
         {
-            Console.WriteLine("\n  Commands:\n  su - Switch to the next user\n  reset - Reset FakeChat");
+            Console.WriteLine("\n  Commands:\n  su [user] - Switch to a user\n  reset - Reset FakeChat");
         }
     }
 }
@@ -78,7 +82,7 @@ void PrintMessages() // print em messages
     string lastUser = "";
     foreach (List<string> msg in messages)
     {
-        if (msg[2] != "" && msg[2] != "su" && msg[2] != "help")
+        if (msg[2] != "" && msg[2] != "su" && msg[2] != "help" && msg[2] != "su " + Convert.ToString(user + 1))
         {
             if (lastUser != msg[0])
             {
@@ -102,6 +106,8 @@ void ColoredText(int color, string text) // colored text :3 color me mommy
             Console.ForegroundColor = ConsoleColor.Blue; break;
         case 4:
             Console.ForegroundColor = ConsoleColor.Green; break;
+        case 5:
+            Console.ForegroundColor = ConsoleColor.Yellow; break;
     }
     Console.WriteLine(text);
     Console.ForegroundColor = ConsoleColor.White;
