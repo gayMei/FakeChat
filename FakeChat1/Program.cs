@@ -33,6 +33,7 @@ while (true) // typing loop
     while(true)
     {
         List<string> message = new List<string>(); // declare message
+        bool help = false;
 
         Console.Write("______________________________________________________________________________________\n> ");
         string input = Console.ReadLine(); // input, checking
@@ -43,6 +44,9 @@ while (true) // typing loop
         {
             case "reset":
                 goto Reset;
+            case "help":
+                help = true;
+                break;
             case "su": // user switching
                 if (user == users.Count - 1)
                 {
@@ -62,6 +66,10 @@ while (true) // typing loop
         messages.Add(message);
 
         PrintMessages();
+        if (help)
+        {
+            Console.WriteLine("\n  Commands:\n  su - Switch to the next user\n  reset - Reset FakeChat");
+        }
     }
 }
 
@@ -70,7 +78,7 @@ void PrintMessages() // print em messages
     string lastUser = "";
     foreach (List<string> msg in messages)
     {
-        if (msg[2] != "" && msg[2] != "su")
+        if (msg[2] != "" && msg[2] != "su" && msg[2] != "help")
         {
             if (lastUser != msg[0])
             {
@@ -102,6 +110,6 @@ void ColoredText(int color, string text) // colored text :3 color me mommy
 void PrintWindow()
 {
     Console.BackgroundColor = ConsoleColor.DarkBlue;
-    Console.WriteLine("FakeChat - chat with yourself! reset to reset all data, su to switch user       - [] X\n");
+    Console.WriteLine("FakeChat - type [help] for help                                                 - [] X\n");
     Console.BackgroundColor = ConsoleColor.Black;
 }
