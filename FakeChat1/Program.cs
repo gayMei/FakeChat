@@ -31,33 +31,36 @@ while (true) // typing loop
             case "help":
                 fuckup = 1;
                 break;
+            case "delete":
+                fuckup = 3;
+                break;
         }
 
         string[] words = input.Split(' '); // splitting words is harder than splitting people
 
-        if (words[0] == "su")
+        switch (words[0])
         {
-            if (Convert.ToInt32(words[1]) <= users.Count && Convert.ToInt32(words[1]) != 0) // new and refined user switching!!!!!! how cool and amazing and awesome
-            {
-                user = Convert.ToInt32(words[1]) - 1;
-            }
-            else
-            {
-                fuckup = 2; 
-            }
-        }
-        else if (words[0] == "edit")
-        {
-            if (Convert.ToInt32(messages[messages.Count - 1][0]) == user + 1)
-            {
-                input = "";
-                for (int i = 1; i < words.Length; i++)
+            case "su":
+                if (Convert.ToInt32(words[1]) <= users.Count && Convert.ToInt32(words[1]) != 0) // user switching
                 {
-                    input += words[i] + " ";
+                    user = Convert.ToInt32(words[1]) - 1;
                 }
-                messages[messages.Count - 1][2] = input;
-            }
-
+                else
+                {
+                    fuckup = 2;
+                }
+                break;
+            case "edit":
+                if (Convert.ToInt32(messages[messages.Count - 1][0]) == user + 1)
+                {
+                    input = "";
+                    for (int i = 1; i < words.Length; i++)
+                    {
+                        input += words[i] + " ";
+                    }
+                    messages[messages.Count - 1][2] = input;
+                }
+                break;
         }
 
         message.Add(users[user]); // add shit to message
@@ -71,10 +74,19 @@ while (true) // typing loop
         switch (fuckup)
         {
             case 1:
-                Console.WriteLine("\n  Commands:\n  su [user] - Switch to a user\n  reset - Reset FakeChat\n  edit [message] - Edit the last message (user sensitive)");
+                Console.WriteLine("\n  Commands:\n  su [user] - Switch to a user\n  reset - Reset FakeChat\n  edit [message] - Edit the last message (user sensitive)\n  delete - Delete the last message (user sensitive)");
                 break;
             case 2:
                 Console.WriteLine("\n  This user does not exist!");
+                break;
+            case 3:
+                if (Convert.ToInt32(messages[messages.Count - 1][0]) == user + 1)
+                {
+                    messages.Remove(messages[messages.Count - 1]);
+                    Console.Clear();
+                    PrintWindow();
+                    PrintMessages();
+                }
                 break;
         }
     }
@@ -99,7 +111,7 @@ void PrintMessages() // print em messages
 
 void SortMessage(List<string> message)
 {
-    if (message[2] != "" && message[2] != "help" && message[3] != "su" && message[3] != "edit")
+    if (message[2] != "" && message[2] != "help" && message[2] != "delete" && message[3] != "su" && message[3] != "edit")
     {
         messages.Add(message);
     }
