@@ -3,9 +3,10 @@ Console.Clear();
 
 List<List<string>> messages = new List<List<string>>(); // declare messages
 
-List<string> users = new List<string>(); // declare users
-List<int> colors = new List<int>();
+List<string> users = new List<string>(); // declare user
+List<byte> colors = new List<byte>();
 int user = 0;
+
 
 while (true)
 {
@@ -21,7 +22,7 @@ while (true)
     Console.Clear();
     Console.WriteLine("\n  Colors guide:\n  1 - Magenta\n  2 - Red\n  3 - Blue\n  4 - Green\n  5 - Yellow");
     Console.Write($"\n  Please enter the color of User {users.Count}: ");
-    int intput = Convert.ToInt32(Console.ReadLine());
+    byte intput = Convert.ToByte(Console.ReadLine());
     colors.Add(intput); // add intput to colors
 }
 
@@ -33,7 +34,7 @@ while (true) // typing loop
     while(true)
     {
         List<string> message = new List<string>(); // declare message
-        bool help = false;
+        byte fuckup = 0;
 
         Console.Write("______________________________________________________________________________________\n> ");
         string input = Console.ReadLine(); // input, checking
@@ -45,34 +46,48 @@ while (true) // typing loop
             case "reset":
                 goto Reset;
             case "help":
-                help = true;
+                fuckup = 1;
                 break;
         }
         string[] words = input.Split(' ');
         if (words[0] == "su")
         {
-            if (Convert.ToInt32(words[1]) <= users.Count) // new and refined user switching!!!!!! how cool and amazing and awesome
+            if (Convert.ToInt32(words[1]) <= users.Count && Convert.ToInt32(words[1]) != 0) // new and refined user switching!!!!!! how cool and amazing and awesome
             {
                 user = Convert.ToInt32(words[1]) - 1;
             }
             else
             {
-                Console.WriteLine("\n  This user does not exist!");
-                Console.WriteLine($"  the number you wrote is {Convert.ToInt32(words[1])}");
-                Console.WriteLine($" it is bigger than {users.Count}");
+                fuckup = 2;
             }
+        }
+        else if (words[0] == "edit")
+        {
+            input = "";
+            for (int i = 1; i < words.Length; i++)
+            {
+                input += words[i] + " ";
+            }
+            messages[messages.Count - 1][2] = input;
         }
 
         message.Add(users[user]); // add shit to message
         message.Add(Convert.ToString(colors[user]));
         message.Add(input);
+        message.Add(words[0]);
 
         messages.Add(message);
 
         PrintMessages();
-        if (help)
+
+        switch (fuckup)
         {
-            Console.WriteLine("\n  Commands:\n  su [user] - Switch to a user\n  reset - Reset FakeChat");
+            case 1:
+                Console.WriteLine("\n  Commands:\n  su [user] - Switch to a user\n  reset - Reset FakeChat");
+                break;
+            case 2:
+                Console.WriteLine("\n  This user does not exist!");
+                break;
         }
     }
 }
@@ -82,7 +97,7 @@ void PrintMessages() // print em messages
     string lastUser = "";
     foreach (List<string> msg in messages)
     {
-        if (msg[2] != "" && msg[2] != "su" && msg[2] != "help" && msg[2] != "su " + Convert.ToString(user + 1))
+        if (msg[2] != "" && msg[2] != "su" && msg[2] != "help" && msg[3] != "su" && msg[3] != "edit")
         {
             if (lastUser != msg[0])
             {
