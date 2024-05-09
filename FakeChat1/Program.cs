@@ -25,7 +25,7 @@ while (true) // typing loop
         Console.Clear();
         PrintWindow();
 
-        switch (input)
+            switch (input)
         {
             case "reset":
                 goto Reset;
@@ -59,7 +59,7 @@ while (true) // typing loop
                 }
                 break;
             case "edit":
-                if (Convert.ToInt32(messages[messages.Count - 1][0]) == user + 1)
+                if (Convert.ToInt32(messages[user][0]) == user + 1)
                 {
                     input = "";
                     for (int i = 1; i < words.Length; i++)
@@ -77,7 +77,7 @@ while (true) // typing loop
                 break;
         }
 
-        message.Add(users[user]); // add shit to message
+        message.Add(Convert.ToString(user)); // add shit to message
         message.Add(Convert.ToString(colors[user]));
         message.Add(input);
         message.Add(words[0]);
@@ -94,12 +94,17 @@ while (true) // typing loop
                 Console.WriteLine("\n  This user does not exist!");
                 break;
             case 3:
-                if (Convert.ToInt32(messages[messages.Count - 1][0]) == user + 1)
+                if (Convert.ToInt32(messages[pointingAt][0]) == user)
                 {
                     messages.Remove(messages[pointingAt]);
+                    if (pointingAt == messages.Count)
+                    {
+                        pointingAt--;
+                    }
                     Console.Clear();
                     PrintWindow();
                     PrintMessages();
+
                 }
                 break;
         }
@@ -113,7 +118,7 @@ void PrintMessages() // print em messages
     {
         if (lastUser != messages[i][0])
         {
-            ColoredText(Convert.ToInt32(messages[i][1]), "  " + messages[i][0]); // print the username
+            ColoredText(Convert.ToInt32(messages[i][1]), "  " + users[Convert.ToInt32(messages[i][0])]); // print the username
         }
         lastUser = messages[i][0];
         Console.Write("  " + messages[i][2]);
