@@ -6,6 +6,7 @@ List<List<string>> messages = new List<List<string>>(); // declare messages
 List<string> users = new List<string>(); // declare user
 List<byte> colors = new List<byte>();
 int user = 0;
+int pointingAt = 0;
 
 
 SetupUsers();
@@ -41,9 +42,16 @@ while (true) // typing loop
         switch (words[0])
         {
             case "su":
-                if (Convert.ToInt32(words[1]) <= users.Count && Convert.ToInt32(words[1]) != 0) // user switching
+                if (words.Length > 1)
                 {
-                    user = Convert.ToInt32(words[1]) - 1;
+                    if (Convert.ToInt32(words[1]) <= users.Count && Convert.ToInt32(words[1]) != 0) // user switching
+                    {
+                        user = Convert.ToInt32(words[1]) - 1;
+                    }
+                    else
+                    {
+                        fuckup = 2;
+                    }
                 }
                 else
                 {
@@ -58,8 +66,14 @@ while (true) // typing loop
                     {
                         input += words[i] + " ";
                     }
-                    messages[messages.Count - 1][2] = input;
+                    messages[pointingAt][2] = input;
                 }
+                break;
+            case "up":
+                pointingAt--;
+                break;
+            case "down":
+                pointingAt++;
                 break;
         }
 
@@ -74,7 +88,7 @@ while (true) // typing loop
         switch (fuckup)
         {
             case 1:
-                Console.WriteLine("\n  Commands:\n  su [user] - Switch to a user\n  reset - Reset FakeChat\n  edit [message] - Edit the last message (user sensitive)\n  delete - Delete the last message (user sensitive)");
+                Console.WriteLine("\n  Commands:\n  up/down - Select a message\n  su [user] - Switch to a user\n  reset - Reset FakeChat\n  edit [message] - Edit selected message (user sensitive)\n  delete - Delete selected message (user sensitive)");
                 break;
             case 2:
                 Console.WriteLine("\n  This user does not exist!");
@@ -82,7 +96,7 @@ while (true) // typing loop
             case 3:
                 if (Convert.ToInt32(messages[messages.Count - 1][0]) == user + 1)
                 {
-                    messages.Remove(messages[messages.Count - 1]);
+                    messages.Remove(messages[pointingAt]);
                     Console.Clear();
                     PrintWindow();
                     PrintMessages();
@@ -95,25 +109,29 @@ while (true) // typing loop
 void PrintMessages() // print em messages
 {
     string lastUser = "";
-    foreach (List<string> msg in messages)
+    for (int i = 0; i < messages.Count; i++)
     {
-        if (msg[2] != "" && msg[2] != "su" && msg[2] != "help" && msg[3] != "su" && msg[3] != "edit")
+        if (lastUser != messages[i][0])
         {
-            if (lastUser != msg[0])
-            {
-                ColoredText(Convert.ToInt32(msg[1]), "  " + msg[0]); // print the username
-            }
-            lastUser = msg[0];
-            Console.WriteLine("  " + msg[2]);
+            ColoredText(Convert.ToInt32(messages[i][1]), "  " + messages[i][0]); // print the username
         }
+        lastUser = messages[i][0];
+        Console.Write("  " + messages[i][2]);
+        if (i == pointingAt)
+        {
+            Console.Write(" *");
+        }
+        Console.WriteLine("");
+        //Console.WriteLine(pointingAt);
     }
 }
 
 void SortMessage(List<string> message)
 {
-    if (message[2] != "" && message[2] != "help" && message[2] != "delete" && message[3] != "su" && message[3] != "edit")
+    if (message[2] != "" && message[2] != "help" && message[2] != "delete" && message[3] != "su" && message[3] != "edit" && message[3] != "up" && message[3] != "down")
     {
         messages.Add(message);
+        pointingAt = messages.Count - 1;
     }
 }
 
