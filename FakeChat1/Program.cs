@@ -8,7 +8,6 @@ List<byte> colors = new List<byte>();
 int user = 0;
 int pointingAt = 0;
 
-
 SetupUsers();
 Console.Clear();
 PrintWindow();
@@ -59,7 +58,7 @@ while (true) // typing loop
                 }
                 break;
             case "edit":
-                if (Convert.ToInt32(messages[user][0]) == user + 1)
+                if (Convert.ToInt32(messages[pointingAt][0]) == user)
                 {
                     input = "";
                     for (int i = 1; i < words.Length; i++)
@@ -74,6 +73,24 @@ while (true) // typing loop
                 break;
             case "down":
                 pointingAt++;
+                break;
+            case "select":
+                while(true)
+                {
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+                    if (keyInfo.Key == ConsoleKey.UpArrow)
+                    {
+                        pointingAt--;
+                    }
+                    else if (keyInfo.Key == ConsoleKey.DownArrow)
+                    {
+                        pointingAt++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 break;
         }
 
@@ -133,7 +150,9 @@ void PrintMessages() // print em messages
 
 void SortMessage(List<string> message)
 {
-    if (message[2] != "" && message[2] != "help" && message[2] != "delete" && message[3] != "su" && message[3] != "edit" && message[3] != "up" && message[3] != "down")
+    if (message[2] != "" && message[2] != "help" && message[2] != "delete" 
+        && message[3] != "su" && message[3] != "edit" && message[3] != "up" 
+        && message[3] != "down" && message[3] != "select")
     {
         messages.Add(message);
         pointingAt = messages.Count - 1;
