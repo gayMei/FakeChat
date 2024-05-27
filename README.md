@@ -1,6 +1,7 @@
-# FakeChat 
-**FakeChat** is a simple program made in C# built to badly simulate a chatting enviroment in a console. It is light, easy to use and effective at its one goal - to make you feel less lonely. It is a replacement for any chatting app if you don't mind the fact **you're not actually chatting with people**. No internet required.
+# FagChat 
+Much like FakeChat, **FagChat** is a simple C# console app that badly simulates a chatting enviroment. Unlike FakeChat, you can only set up one user. With this user, you can chat with four fake characters - Submissive catgirl, Gay puppygirl, Dommy mommy and Autism itself. While this branch has less features, it does simulate a chatting enviroment more accurately. No internet required since **you're not actually chatting with real people**.
 ## Features
-- Multiple users
+- One user with a custom name
 - Up to 5 different user colors
-- That's about it lmao
+- Four fake faggots with different personalities
+- Yeah and that's pretty much all I think
