@@ -3,12 +3,10 @@ Console.Clear();
 
 List<List<string>> messages = new List<List<string>>(); // declare messages
 
-List<string> users = new List<string>(); // declare user
+List<string> users = new List<string>();
 List<byte> colors = new List<byte>();
-int user = 0;
-int pointingAt = 0;
 
-SetupUsers();
+SetupUser();
 Console.Clear();
 PrintWindow();
 
@@ -17,7 +15,7 @@ while (true) // typing loop
     while(true)
     {
         List<string> message = new List<string>(); // declare message
-        byte fuckup = 0;
+        bool fuckup = false;
 
         Console.Write("______________________________________________________________________________________\n> ");
         string input = Console.ReadLine(); // input, checking
@@ -28,121 +26,45 @@ while (true) // typing loop
         {
             case "reset":
                 goto Reset;
-            case "help":
-                fuckup = 1;
+            case "help me daddy":
+                fuckup = true;
                 break;
-            case "delete":
-                fuckup = 3;
-                break;
-        }
-
-        string[] words = input.Split(' '); // splitting words is harder than splitting people
-
-        switch (words[0])
-        {
-            case "su":
-                if (words.Length > 1)
-                {
-                    if (Convert.ToInt32(words[1]) <= users.Count && Convert.ToInt32(words[1]) != 0) // user switching
-                    {
-                        user = Convert.ToInt32(words[1]) - 1;
-                    }
-                    else
-                    {
-                        fuckup = 2;
-                    }
-                }
-                else
-                {
-                    fuckup = 2;
-                }
-                break;
-            case "edit":
-                if (Convert.ToInt32(messages[pointingAt][0]) == user)
-                {
-                    input = "";
-                    for (int i = 1; i < words.Length; i++)
-                    {
-                        input += words[i] + " ";
-                    }
-                    messages[pointingAt][2] = input;
-                }
-                break;
-            case "up":
-                pointingAt--;
-                break;
-            case "down":
-                pointingAt++;
-                break;
-            case "select":
-                while(true)
-                {
-                    ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
-                    if (keyInfo.Key == ConsoleKey.UpArrow)
-                    {
-                        pointingAt--;
-                    }
-                    else if (keyInfo.Key == ConsoleKey.DownArrow)
-                    {
-                        pointingAt++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+            case "help me mommy":
+                fuckup = true;
                 break;
         }
 
-        message.Add(Convert.ToString(user)); // add shit to message
-        message.Add(Convert.ToString(colors[user]));
+        message.Add(Convert.ToString(users[0])); // add shit to message
+        message.Add(Convert.ToString(colors[0]));
         message.Add(input);
-        message.Add(words[0]);
 
         SortMessage(message);
         PrintMessages();
-
-        switch (fuckup)
+        
+        if (message[2] != "" && message[2] != "help me mommy" && message[2] != "help me daddy")
         {
-            case 1:
-                Console.WriteLine("\n  Commands:\n  up/down - Select a message\n  su [user] - Switch to a user\n  reset - Reset FakeChat\n  edit [message] - Edit selected message (user sensitive)\n  delete - Delete selected message (user sensitive)");
-                break;
-            case 2:
-                Console.WriteLine("\n  This user does not exist!");
-                break;
-            case 3:
-                if (Convert.ToInt32(messages[pointingAt][0]) == user)
-                {
-                    messages.Remove(messages[pointingAt]);
-                    if (pointingAt == messages.Count)
-                    {
-                        pointingAt--;
-                    }
-                    Console.Clear();
-                    PrintWindow();
-                    PrintMessages();
+            NPCResponse();
+        }
 
-                }
-                break;
+        if (fuckup)
+        {
+            Console.WriteLine("\n  Commands:\n  reset - Reset FagChat");
         }
     }
 }
 
-void PrintMessages() // print em messages
+void PrintMessages() 
 {
     string lastUser = "";
     for (int i = 0; i < messages.Count; i++)
     {
         if (lastUser != messages[i][0])
         {
-            ColoredText(Convert.ToInt32(messages[i][1]), "  " + users[Convert.ToInt32(messages[i][0])]); // print the username
+            int color = Convert.ToInt32(messages[i][1]);
+            ColoredText(color, "  " + users.Find(user => user == messages[i][0]));
         }
         lastUser = messages[i][0];
         Console.Write("  " + messages[i][2]);
-        if (i == pointingAt)
-        {
-            Console.Write(" *");
-        }
         Console.WriteLine("");
         //Console.WriteLine(pointingAt);
     }
@@ -150,12 +72,9 @@ void PrintMessages() // print em messages
 
 void SortMessage(List<string> message)
 {
-    if (message[2] != "" && message[2] != "help" && message[2] != "delete" 
-        && message[3] != "su" && message[3] != "edit" && message[3] != "up" 
-        && message[3] != "down" && message[3] != "select")
+    if (message[2] != "" && message[2] != "help me daddy" && message[2] != "help me mommy")
     {
         messages.Add(message);
-        pointingAt = messages.Count - 1;
     }
 }
 
@@ -181,27 +100,77 @@ void ColoredText(int color, string text) // colored text :3 color me mommy
 void PrintWindow()
 {
     Console.BackgroundColor = ConsoleColor.DarkBlue;
-    Console.WriteLine("FakeChat - type [help] for help                                                 - [] X\n");
+    Console.WriteLine("FakeFag - type [help me mommy] for help~                                        - [] X\n");
     Console.BackgroundColor = ConsoleColor.Black;
 }
 
-void SetupUsers()
+void SetupUser()
 {
-    while (true)
+    Console.Clear();
+    Console.Write($"\n  Please enter your username: ");
+    users.Add(Console.ReadLine());
+    colors.Add(1);
+
+    users.Add("Submissive catgirl");
+    users.Add("Gay puppygirl");
+    users.Add("Dommy mommy <3");
+    users.Add("Autism itself");
+    colors.Add(2); colors.Add(5); colors.Add(3); colors.Add(4);
+}
+
+void NPCResponse()
+{
+    string lastUser = messages[messages.Count - 1][0];
+    Random r = new Random();
+    int responses = r.Next(3, 7);
+    int callie = 1; // go read challenger deep i beg you it's so fucking good
+
+    for (int j = 0; j < responses; j++)
     {
-        Console.Clear();
-        if (users.Count > 1) { Console.Write("\n  Type [start] to start the chat."); }
-        Console.Write($"\n  Please enter the name of User {users.Count + 1}: ");
-        string input = Console.ReadLine();
-        if (input == "start" && users.Count > 1) // if input = start
+        int random = r.Next(1, 13);
+        if (random != 1)
         {
-            break;
+            int npc = r.Next(1, 5);
+            callie = npc;
         }
-        users.Add(input); // add input to users
+
+        int words = r.Next(1, 13);
+        string input = "";
+        List<string[]> speakwords = new List<string[]>();
+        string[] speakwords1 = { "meow", "mrrrow", "mrrrp", "nyaaa", "nya", "mew", "meowwww" };
+        speakwords.Add(speakwords1);
+        string[] speakwords2 = { "wruff", "woof", "*wags tail*", "wrauff", "woef", "wrafu" };
+        speakwords.Add(speakwords2);
+        string[] speakwords3 = { "miss", "wife", "love", "wifey", "girlfriend", "cute", "faggot", "need", "gay", "I", "say gex", "uwu" };
+        speakwords.Add(speakwords3);
+        string[] speakwords4 = { "womp womp", "bwaah", "silly", "car", "cat", ">w<", ":3", "*bite*", "on top" };
+        speakwords.Add(speakwords4);
+
+        int last = 0;
+        for (int i = 0; i < words; i++)
+        {
+            int chosenword = r.Next(0, speakwords[callie - 1].Length);
+            if (chosenword != last)
+            {
+                input += speakwords[callie - 1][chosenword] + " ";
+            }
+            else { i--; }
+            last = chosenword;
+        }
+
+        input = input.Trim();
+
+        List<string> message = new List<string>();
+        message.Add(Convert.ToString(users[callie]));
+        message.Add(Convert.ToString(colors[callie]));
+        message.Add(input);
+        SortMessage(message);
+
+        int sleep = r.Next(300, 1500);
+        Thread.Sleep(sleep);
+
         Console.Clear();
-        Console.WriteLine("\n  Colors guide:\n  1 - Magenta\n  2 - Red\n  3 - Blue\n  4 - Green\n  5 - Yellow");
-        Console.Write($"\n  Please enter the color of User {users.Count}: ");
-        byte intput = Convert.ToByte(Console.ReadLine());
-        colors.Add(intput); // add intput to colors
+        PrintWindow();
+        PrintMessages();
     }
 }
