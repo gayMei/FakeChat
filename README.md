@@ -3,4 +3,5 @@
 ## Features
 - Multiple users
 - Up to 5 different user colors
+- Message editing and deleting
 - That's about it lmao
