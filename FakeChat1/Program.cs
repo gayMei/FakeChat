@@ -100,7 +100,7 @@ void ColoredText(int color, string text) // colored text :3 color me mommy
 void PrintWindow()
 {
     Console.BackgroundColor = ConsoleColor.DarkBlue;
-    Console.WriteLine("FakeFag - type [help me mommy] for help~                                        - [] X\n");
+    Console.WriteLine("FagChat - type [help me mommy] for help~                                        - [] X\n");
     Console.BackgroundColor = ConsoleColor.Black;
 }
 
